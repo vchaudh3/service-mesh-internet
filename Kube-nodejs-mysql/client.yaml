@@ -1,0 +1,51 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: static-client
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: static-client
+spec:
+  selector:
+    app: static-client
+  ports:
+    - port: 4321
+      targetPort: 4321
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: static-client
+  name: static-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: static-client
+  template:
+    metadata:
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+        #consul.hashicorp.com/connect-service-upstreams: 'nginx:1234'
+        #consul.hashicorp.com/connect-service-upstreams: 'static-server:1234,nginx:1235,nginx-pod:1236,nginx-local-host:1237,consul-https:1238,httpbin:1239,nginx-local-host-ext:1240,mysql-ext:1241,httpbin-ip:1242,httpbin-ip-name:1242'
+        consul.hashicorp.com/connect-service-upstreams: 'static-server:1234,nginx:1235,nginx-pod:1236,nginx-local-host:1237,consul-https:1238,httpbin:1239,nginx-local-host-ext:1240,mysql-ext:1241,httpbin-ip:1242,httpbin-ip-name:1243,nginx-local-host-name:1244'
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9102"
+      labels:
+        app: static-client
+    spec:
+      serviceAccountName: static-client
+      containers:
+        - name: static-client
+          #image: tutum/curl:latest
+          image: curlimages/curl 
+          ports:
+            - containerPort: 4321
+          command: ["/bin/sleep", "3650d"]
+          #command: ['/bin/sh', '-c', '--']
+          #args: ['while true; do sleep 30; done;']
+

@@ -1,0 +1,14 @@
+{
+  "Node": "node-dc1-nginx-no-ssl",
+  "Address": "100.25.163.187",
+  "NodeMeta": {
+    "external-node": "true",
+    "external-probe": "true"
+  },
+  "Service": {
+    "ID": "dc1-nginx-no-ssl",
+    "Service": "dc1-nginx-no-ssl",
+    "Port": 3000 
+  }
+}
+

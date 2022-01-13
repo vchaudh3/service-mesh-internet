@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: world-app-sm-enabled-2
+    #version: v3
+  name: world-app-sm-enabled-2-v3
+spec:
+  progressDeadlineSeconds: 2147483647
+  #replicas: 3
+  replicas: 1
+  revisionHistoryLimit: 2147483647
+  selector:
+    matchLabels:
+      app: world-app-sm-enabled-2
+      #version: v3
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        consul.hashicorp.com/connect-inject: "true"
+        #consul.hashicorp.com/connect-service-protocol: http
+        consul.hashicorp.com/service-meta-version: "3"
+        consul.hashicorp.com/service-tags: v3
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9102"
+      creationTimestamp: null
+      labels:
+        app: world-app-sm-enabled-2
+        #version: v3
+    spec:
+      serviceAccountName: world-app-sm-enabled-2
+      containers:
+      - env:
+        - name: TEXT
+          value: 'world-app-sm-enabled2-!!!-v3'
+        - name: LATENCY
+          value: "5"
+        image: vchaudh3/http-echo
+        imagePullPolicy: Always
+        #name: world-app-sm-enabled-2-v3
+        name: world-app-sm-enabled-2
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+---

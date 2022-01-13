@@ -1,0 +1,15 @@
+{
+    "Node": "legacy_node",
+    "Address": "34.207.61.243",
+    "NodeMeta": {
+      "external-node": "true",
+      "external-probe": "true"
+    },
+    "Service": {
+      "ID": "nginx",
+      "Service": "nginx",
+      "Port": 80
+    }
+  }
+
+  #can't use as it's part of connect stanza and here we are not going to bring it as part of SM. Hence using tg

@@ -1,0 +1,13 @@
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: TerminatingGateway
+metadata:
+  #name: terminating-gateway
+  name: terminating-gateway-dc1
+spec:
+  services:
+    - name: dc1-nginx-ssl
+      #caFile: /etc/ssl/certs/ca.pem 
+      #caFile: tls.crt 
+      caFile: /consul/tls/ca/tls.crt 
+      #keyFile: /etc/ssl/private/key.pem 
+

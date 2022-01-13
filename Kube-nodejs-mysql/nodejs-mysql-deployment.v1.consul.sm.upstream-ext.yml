@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: k8s-demo-sm-upstream-ext
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application-deployment-sm-upstream-ext
+  labels:
+    app: application-db-sm-upstream-ext
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: application-db-sm-upstream-ext
+  template:
+    metadata:
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/service-meta-version: "1"
+        consul.hashicorp.com/service-tags: v1
+        consul.hashicorp.com/connect-service-upstreams: 'tetarwal-de-mysql:1249,mysql-db:1250'
+        #consul.hashicorp.com/connect-service-upstream-exts: 'mysql-db:1249'
+      labels:
+        app: application-db-sm-upstream-ext
+    spec:
+      serviceAccountName: k8s-demo-sm-upstream-ext
+      containers:
+      - name: k8s-demo-sm-upstream-ext
+        image: vchaudh3/k8s-demo-upstream
+        command: ["node", "index-db.js"]
+        ports:
+        - name: nodejs-port
+          containerPort: 3000
+        env:
+          - name: MYSQL_HOST
+            #value: database-service
+            #value: 172.17.0.11
+            value: 127.0.0.1
+          - name: MYSQL_PORT
+            value: "1249"
+          - name: MYSQL_USER
+            value: root
+            #value: vignesh
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: my-secrets
+                key: rootPassword
+                #key: vigneshPassword
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: my-secrets
+                key: database

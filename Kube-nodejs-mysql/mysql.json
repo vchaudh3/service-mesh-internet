@@ -1,0 +1,12 @@
+{
+    "id": "mysql",
+    "name": "mysql",
+    "port": 3306,
+    "check": {
+      "name": "ping check",
+      "args": ["ping", "-c1", "learn.hashicorp.com"],
+      "interval": "30s",
+      "status": "passing"
+    }
+  }
+  

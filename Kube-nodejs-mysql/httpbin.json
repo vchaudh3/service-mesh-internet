@@ -1,0 +1,14 @@
+{
+  "Node": "httpbin_node",
+  "Address": "httpbin.org",
+  "NodeMeta": {
+    "external-node": "true",
+    "external-probe": "true"
+  },
+  "Service": {
+    "Address": "httpbin.org",
+    "ID": "httpbin",
+    "Service": "httpbin",
+    "Port": 80
+  }
+}

@@ -1,0 +1,10 @@
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: TerminatingGateway
+metadata:
+  #name: terminating-gateway
+  name: terminating-gateway-dc1
+spec:
+  services:
+    - name: counting
+      caFile: ca.pem
+

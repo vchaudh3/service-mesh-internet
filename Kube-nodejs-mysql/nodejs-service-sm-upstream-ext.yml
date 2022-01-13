@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-db-service-sm-upstream-ext
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+  selector:
+    app: application-db-sm-upstream-ext
+  type: NodePort

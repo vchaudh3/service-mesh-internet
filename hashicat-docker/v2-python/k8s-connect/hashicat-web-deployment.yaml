@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hashicat-web
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hashicat-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hashicat-web
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: hashicat-web
+        version: v1
+      annotations:
+        #'consul.hashicorp.com/connect-service-protocol': 'http'
+        'consul.hashicorp.com/connect-inject': 'true'
+        'consul.hashicorp.com/connect-service-upstreams': 'hashicat-image:80'
+        'consul.hashicorp.com/service-tags': 'v1'
+        'consul.hashicorp.com/service-meta-version': '1'
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9102"
+    spec:
+      serviceAccountName: hashicat-web
+      containers:
+        - name: hashicat-web
+          image: kawsark/hashicat-web:0.0.1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DEBUG
+              value: "True"
+            - name: URLSERVICE_URI
+              value: "http://127.0.0.1/url"
+              #value: "http://hashicat-image.default.svc.cluster.local:80/url"
+            - name: METADATA_URI
+              value: "http://127.0.0.1/metadata"
+              #value: "http://hashicat-image.default.svc.cluster.local:80/metadata"
+          ports:
+          - containerPort: 5000

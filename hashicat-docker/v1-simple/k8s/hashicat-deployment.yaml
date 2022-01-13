@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hashicat
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hashicat-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hashicat
+  template:
+    metadata:
+      name: hashicat
+      labels:
+        app: hashicat
+        version: v1
+      annotations:
+        #'consul.hashicorp.com/connect-service-protocol': 'http'
+        'consul.hashicorp.com/connect-inject': 'true'
+        'consul.hashicorp.com/service-tags': 'v1'
+        'consul.hashicorp.com/service-meta-version': '1'  
+    spec:
+      serviceAccountName: hashicat
+      containers:
+        - name: hashicat
+          image: kawsark/hashicat:0.0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 80

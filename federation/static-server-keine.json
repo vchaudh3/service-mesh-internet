@@ -1,0 +1,14 @@
+{
+  "Node": "legacy_node_3",
+  "Address": "10.244.0.60",
+  "NodeMeta": {
+    "external-node": "true",
+    "external-probe": "true"
+  },
+  "Service": {
+    "ID": "static-server-keine",
+    "Service": "static-server-keine",
+    "Port": 8080
+  }
+}
+

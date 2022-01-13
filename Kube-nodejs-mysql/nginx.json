@@ -1,0 +1,13 @@
+{
+    "Node": "legacy_node",
+    "Address": "34.207.61.243",
+    "NodeMeta": {
+      "external-node": "true",
+      "external-probe": "true"
+    },
+    "Service": {
+      "ID": "nginx",
+      "Service": "nginx",
+      "Port": 80
+    }
+  }

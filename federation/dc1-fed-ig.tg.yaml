@@ -1,0 +1,31 @@
+global:
+  name: consul
+  datacenter: dc1
+  federation:
+    enabled: true
+    createFederationSecret: true
+  tls:
+    enabled: true
+server:
+  replicas: 1
+ui:
+  service:
+    type: LoadBalancer
+meshGateway:
+  enabled: true
+  #replicas: 1
+connectInject:
+  enabled: true
+controller:
+  enabled: true
+ingressGateways:
+  enabled: true
+  gateways:
+    - name: ingress-gateway-dc1
+      service:
+        type: LoadBalancer
+terminatingGateways:
+  enabled: true
+  gateways:
+    - name: terminating-gateway-dc1
+

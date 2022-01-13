@@ -1,0 +1,28 @@
+global:
+  enabled: true
+  name: consul
+  datacenter: dc1
+  metrics:
+    enabled: true
+    enableAgentMetrics: true
+    agentMetricsRetentionTime: "1m"
+server:
+  replicas: 1
+connectInject:
+  enabled: true
+  default: true
+controller:
+  enabled: true
+ingressGateways:
+  enabled: true
+  defaults:
+    # Number of replicas for each ingress gateway defined.
+    replicas: 1
+    service:
+      type: NodePort
+      ports:
+        - port: 8080
+          nodePort: 30013
+        - port: 8443
+          nodePort: 30014  
+  

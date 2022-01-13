@@ -1,0 +1,49 @@
+global:
+  name: consul
+  datacenter: dc1
+  federation:
+    enabled: true
+    createFederationSecret: true
+  gossipEncryption:
+    secretName: "consul-gossip-encryption-key"
+    secretKey: "key"
+  tls:
+    enabled: true
+    enableAutoEncrypt: true
+    verify: true
+  acls:
+    manageSystemACLs: true
+    createReplicationToken: true
+server:
+  replicas: 1
+  securityContext:
+    runAsNonRoot: false
+    runAsUser: 0
+client:
+  enabled: true
+  # enable grpc on your client to support consul consul connect
+  grpc: true
+ui:
+  service:
+    type: LoadBalancer
+meshGateway:
+  enabled: true
+  #replicas: 1
+connectInject:
+  enabled: true
+  # inject an envoy sidecar into every new pod, except for those with annotations that prevent injection
+  default: true
+  # these settings enable L7 metrics collection and are new in 1.5
+controller:
+  enabled: true
+ingressGateways:
+  enabled: true
+  gateways:
+    - name: ingress-gateway-dc1
+      service:
+        type: LoadBalancer
+terminatingGateways:
+  enabled: true
+  gateways:
+    - name: terminating-gateway-dc1
+

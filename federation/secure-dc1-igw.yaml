@@ -1,0 +1,46 @@
+global:
+  name: consul
+  enabled: true
+  datacenter: dc1
+  gossipEncryption:
+    secretName: "consul-gossip-encryption-key"
+    secretKey: "key"
+  tls:
+    enabled: true
+    enableAutoEncrypt: true
+    verify: true
+  acls:
+    manageSystemACLs: true
+server:
+  replicas: 1
+  securityContext:
+    runAsNonRoot: false
+    runAsUser: 0
+connectInject:
+  enabled: true
+controller:
+  enabled: true
+ingressGateways:
+  defaults:
+    replicas: 1
+  enabled: true
+  gateways:
+    - name: ingress-gateway-dc1
+      service:
+        type: LoadBalancer
+        ports:
+          - port: 3000
+            nodePort: null
+          - port: 8080
+            nodePort: null
+          - port: 8443
+            nodePort: null
+          - port: 80
+            nodePort: null
+ui:
+  service:
+    type: LoadBalancer
+client:
+  enabled: true
+  # enable grpc on your client to support consul consul connect
+  grpc: true

@@ -1,0 +1,13 @@
+{
+  "Node": "legacy_node_example_https2",
+  "Address": "example.com",
+  "NodeMeta": {
+    "external-node": "true",
+    "external-probe": "true"
+  },
+  "Service": {
+    "ID": "example-https2",
+    "Service": "example-https2",
+    "Port": 443
+  }
+}

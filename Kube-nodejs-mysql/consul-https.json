@@ -1,0 +1,14 @@
+{
+  "Node": "consul_io",
+  "Address": "consul.io",
+  "NodeMeta": {
+    "external-node": "true",
+    "external-probe": "true"
+  },
+  "Service": {
+    "Address": "consul.io",
+    "ID": "consul-https",
+    "Service": "consul-https",
+    "Port": 443
+  }
+}

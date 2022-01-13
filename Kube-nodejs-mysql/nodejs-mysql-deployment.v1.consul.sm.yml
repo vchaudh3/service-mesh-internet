@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: k8s-demo-sm
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application-deployment-sm
+  labels:
+    app: application-db-sm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: application-db-sm
+  template:
+    metadata:
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/service-meta-version: "1"
+        consul.hashicorp.com/service-tags: v1
+      labels:
+        app: application-db-sm
+    spec:
+      serviceAccountName: k8s-demo-sm
+      containers:
+      - name: k8s-demo-sm
+        image: wardviaene/k8s-demo
+        command: ["node", "index-db.js"]
+        ports:
+        - name: nodejs-port
+          containerPort: 3000
+        env:
+          - name: MYSQL_HOST
+            #value: database-service
+            #value: 172.17.0.11
+            #value: 34.203.38.80
+            value: mysql-db.service.consul
+          - name: MYSQL_USER
+            value: root
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: my-secrets
+                key: rootPassword
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: my-secrets
+                key: database

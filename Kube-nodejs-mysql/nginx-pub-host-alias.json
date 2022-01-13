@@ -1,0 +1,14 @@
+{
+    "Node": "pub_host_alias",
+    "Address": "pubhostalias.com",
+    "NodeMeta": {
+      "external-node": "true",
+      "external-probe": "true"
+    },
+    "Service": {
+      "Address": "pubhostalias.com",
+      "ID": "nginx-pub-host-alias",
+      "Service": "nginx-pub-host-alias",
+      "Port": 80
+    }
+  }

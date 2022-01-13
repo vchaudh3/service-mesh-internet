@@ -1,0 +1,26 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: sample-nginx
+    #cert-manager.io/cluster-issuer: letsencrypt-prod   
+  name: frontend
+  #namespace: default
+spec:
+  # tls:
+  # - hosts:
+  #   - www.devopsbyexample.io
+  #   secretName: hello-kubernetes-tls
+  rules:
+    - host: www.frontend-sm.io
+      http:
+        paths:
+          - backend:
+              serviceName: frontend
+              servicePort: 80
+            path: /
+          - backend:
+              serviceName: missing-backend
+              servicePort: 80
+            path: /do-not-exists

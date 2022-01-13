@@ -1,0 +1,4 @@
+service "counting" {
+  policy = "write"
+}
+

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: api-cb
+    #version: v2
+  name: api-cb-v2
+spec:
+  selector:
+    matchLabels:
+      app: api-cb
+      #version: v2
+  template:
+    metadata:
+      labels:
+        app: api-cb
+        #version: v2
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9102"
+        #'consul.hashicorp.com/connect-service-protocol': 'http'
+        'consul.hashicorp.com/connect-inject': 'true'
+        'consul.hashicorp.com/service-tags': 'v2'
+        'consul.hashicorp.com/service-meta-version': '2'
+    spec:
+      serviceAccountName: api-cb
+      containers:
+      - name: api-cb
+        image: nicholasjackson/fake-service:v0.19.1
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 9092
+        env:
+          - name: LISTEN_ADDR
+            value: 0.0.0.0:9092
+          - name: MESSAGE
+            value: "Hello World"
+          - name: NAME
+            value: "api-v2"
+          - name: SERVER_TYPE
+            value: "http"

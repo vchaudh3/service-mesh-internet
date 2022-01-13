@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-cb-ingress
+  annotations:
+    #kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: sample-nginx
+    #cert-manager.io/cluster-issuer: letsencrypt-prod   
+spec:
+  rules:
+  - host: "web-cb.domain"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: web-cb-svc
+            port:
+              number: 9091

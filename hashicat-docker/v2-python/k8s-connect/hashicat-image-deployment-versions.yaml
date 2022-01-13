@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hashicat-image
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hashicat-image-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hashicat-image
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: hashicat-image
+        version: v1
+      annotations:
+        #'consul.hashicorp.com/connect-service-protocol': 'http'
+        'consul.hashicorp.com/connect-inject': 'true'
+        'consul.hashicorp.com/service-tags': 'v1'
+        'consul.hashicorp.com/service-meta-version': '1'
+    spec:
+      serviceAccountName: hashicat-image
+      containers:
+        - name: hashicat-image
+          image: kawsark/hashicat-image:0.0.1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: HASHICAT_URL
+              value: "http://placekitten.com/700/700"
+            - name: HASHICAT_META
+              value: "Welcome to Inaya's Meowlicious app-v1"
+          ports:
+          - containerPort: 5000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hashicat-image-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hashicat-image
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: hashicat-image
+        version: v2
+      annotations:
+        #'consul.hashicorp.com/connect-service-protocol': 'http'
+        'consul.hashicorp.com/connect-inject': 'true'
+        'consul.hashicorp.com/service-tags': 'v2'
+        'consul.hashicorp.com/service-meta-version': '2'
+    spec:
+      serviceAccountName: hashicat-image
+      containers:
+        - name: hashicat-image
+          image: kawsark/hashicat-image:0.0.1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: HASHICAT_URL
+              value: "http://placekitten.com/800/600"
+            - name: HASHICAT_META
+              value: "Welcome to Inaya's Meowlicious app-v2"
+          ports:
+          - containerPort: 5000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hashicat-image-v3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hashicat-image
+      version: v3
+  template:
+    metadata:
+      labels:
+        app: hashicat-image
+        version: v3
+      annotations:
+        #'consul.hashicorp.com/connect-service-protocol': 'http'
+        'consul.hashicorp.com/connect-inject': 'true'
+        'consul.hashicorp.com/service-tags': 'v3'
+        'consul.hashicorp.com/service-meta-version': '3'
+    spec:
+      serviceAccountName: hashicat-image
+      containers:
+        - name: hashicat-image
+          image: kawsark/hashicat-image:0.0.1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: HASHICAT_URL
+              value: "http://placekitten.com/300/200"
+            - name: HASHICAT_META
+              value: "Welcome to Inaya's Meowlicious app-v3"
+          ports:
+          - containerPort: 5000

@@ -1,0 +1,13 @@
+{
+    "Node": "mysql_node_ext",
+    "Address": "52.91.151.249",
+    "NodeMeta": {
+      "external-node": "true",
+      "external-probe": "true"
+    },
+    "Service": {
+      "ID": "mysql-ext",
+      "Service": "mysql-ext",
+      "Port": 3306
+    }
+  }

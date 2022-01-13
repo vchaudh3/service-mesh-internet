@@ -1,0 +1,29 @@
+# An Ingress with 2 hosts and 3 endpoints
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: helloworld-rules
+  annotations:
+    kubernetes.io/ingress.class: sample-nginx
+spec:
+  rules:
+  - host: helloworld-v1.domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: helloworld-v1
+            port:
+              number: 80
+  - host: helloworld-v2.domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: helloworld-v2
+            port:
+              number: 80

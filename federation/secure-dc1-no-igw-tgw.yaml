@@ -1,0 +1,29 @@
+global:
+  name: consul
+  enabled: true
+  datacenter: dc1
+  gossipEncryption:
+    secretName: "consul-gossip-encryption-key"
+    secretKey: "key"
+  tls:
+    enabled: true
+    enableAutoEncrypt: true
+    verify: true
+  # acls:
+  #   manageSystemACLs: true
+server:
+  replicas: 1
+  securityContext:
+    runAsNonRoot: false
+    runAsUser: 0
+connectInject:
+  enabled: true
+controller:
+  enabled: true
+ui:
+  service:
+    type: LoadBalancer
+client:
+  enabled: true
+  # enable grpc on your client to support consul consul connect
+  grpc: true

@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: aks-helloworld-one-consume
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aks-helloworld-one-consume  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aks-helloworld-one-consume
+  template:
+    metadata:
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/service-meta-version: "1"
+        consul.hashicorp.com/service-tags: v1
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9102"
+        #valid upstream
+        #consul.hashicorp.com/connect-service-upstreams: 'world-app-sm-enabled-standalone-2-dummy:9999'
+        consul.hashicorp.com/connect-service-upstreams: 'world-app-sm-enabled-standalone-2:9999'
+      labels:
+        app: aks-helloworld-one-consume
+    spec:
+      serviceAccountName: aks-helloworld-one-consume
+      containers:
+      - name: aks-helloworld-one-consume
+        image: mcr.microsoft.com/azuredocs/aks-helloworld:v1
+        ports:
+        - containerPort: 80
+        env:
+        - name: TITLE
+          value: "Welcome to Azure Kubernetes Service (AKS)"
+        #- name: NEXT
+          #value: world-app-sm-enabled-standalone-2.default.svc.cluster.local:8080
+          #value: localhost:9999
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aks-helloworld-one-consume  
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    app: aks-helloworld-one-consume
+    

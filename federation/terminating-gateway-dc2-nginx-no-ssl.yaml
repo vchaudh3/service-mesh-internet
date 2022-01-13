@@ -1,0 +1,9 @@
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: TerminatingGateway
+metadata:
+  #name: terminating-gateway
+  name: terminating-gateway-dc2
+spec:
+  services:
+    - name: dc2-nginx-no-ssl
+

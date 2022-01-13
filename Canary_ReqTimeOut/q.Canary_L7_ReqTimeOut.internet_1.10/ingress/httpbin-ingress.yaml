@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: httpbin-ingress
+  annotations:
+    #kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: sample-nginx
+    #cert-manager.io/cluster-issuer: letsencrypt-prod   
+spec:
+  rules:
+  - host: "httpbin.domain"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/status"
+        backend:
+          service:
+            name: httpbin
+            port:
+              number: 8000
+      - pathType: Prefix
+        path: "/delay"
+        backend:
+          service:
+            name: httpbin
+            port:
+              number: 8000

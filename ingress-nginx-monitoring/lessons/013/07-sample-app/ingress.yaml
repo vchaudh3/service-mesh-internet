@@ -1,0 +1,27 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: sample-nginx
+    #cert-manager.io/cluster-issuer: letsencrypt-prod   
+  name: hello-app
+  namespace: default
+spec:
+  # tls:
+  # - hosts:
+  #   - www.devopsbyexample.io
+  #   secretName: hello-kubernetes-tls
+  rules:
+    #- host: www.devopsbyexample-sm.io
+    - host: www.hello-app-service.domain
+      http:
+        paths:
+          - backend:
+              serviceName: hello-app-service
+              servicePort: 8080
+            path: /
+          - backend:
+              serviceName: missing-backend
+              servicePort: 8080
+            path: /do-not-exists

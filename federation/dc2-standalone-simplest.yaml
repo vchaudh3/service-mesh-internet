@@ -1,0 +1,37 @@
+global:
+  name: consul
+  datacenter: dc2
+client:
+  enabled: true
+  # enable grpc on your client to support consul consul connect
+  grpc: true
+ui:
+  service:
+    type: LoadBalancer  
+server:
+  replicas: 1
+  securityContext:
+    runAsNonRoot: false
+    runAsUser: 0
+connectInject:
+  enabled: true
+  # inject an envoy sidecar into every new pod, except for those with annotations that prevent injection
+  default: true
+  # these settings enable L7 metrics collection and are new in 1.5
+  centralConfig:
+    enabled: true
+    # set the default protocol (cab be overwritten with annotations)
+controller:
+  enabled: true
+ingressGateways:
+  enabled: true
+  gateways:
+    - name: ingress-gateway-dc2
+      service:
+        type: LoadBalancer
+terminatingGateways:
+  enabled: true
+  gateways:
+    - name: terminating-gateway-dc2
+
+

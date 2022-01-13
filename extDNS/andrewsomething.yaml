@@ -1,0 +1,39 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: https-with-cert
+  annotations:
+    #external-dns.alpha.kubernetes.io/hostname: "tetarwal.de"
+    external-dns.alpha.kubernetes.io/hostname: "https-with-cert.tetarwal.de"
+    service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "add26614-2564-4d2b-8a6b-dfaf0247b0cc"
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx-example
+  ports:
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-example
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-example
+  template:
+    metadata:
+      labels:
+        app: nginx-example
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80

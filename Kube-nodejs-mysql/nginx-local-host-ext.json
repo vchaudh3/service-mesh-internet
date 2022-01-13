@@ -1,0 +1,13 @@
+{
+    "Node": "local_host_node_ext",
+    "Address": "35.175.136.206",
+    "NodeMeta": {
+      "external-node": "true",
+      "external-probe": "true"
+    },
+    "Service": {
+      "ID": "nginx-local-host-ext",
+      "Service": "nginx-local-host-ext",
+      "Port": 80
+    }
+  }

@@ -1,0 +1,61 @@
+global:
+  name: consul
+  datacenter: dc2
+  gossipEncryption:
+    secretName: "consul-gossip-encryption-key"
+    secretKey: "key"
+  acls:
+    manageSystemACLs: true
+  tls:
+    enabled: true
+    enableAutoEncrypt: true
+    verify: true
+    caCert:
+      secretName: consul-federation
+      secretKey: caCert
+    caKey:
+      secretName: consul-federation
+      secretKey: caKey
+  federation:
+    enabled: true
+client:
+  enabled: true
+  # enable grpc on your client to support consul consul connect
+  grpc: true
+server:
+  replicas: 1
+  securityContext:
+    runAsNonRoot: false
+    runAsUser: 0
+  extraVolumes:
+    - type: secret
+      name: consul-federation
+      items:
+        - key: serverConfigJSON
+          path: config.json
+      load: true
+connectInject:
+  enabled: true
+  # inject an envoy sidecar into every new pod, except for those with annotations that prevent injection
+  default: true
+  # these settings enable L7 metrics collection and are new in 1.5
+  centralConfig:
+    enabled: true
+    # set the default protocol (cab be overwritten with annotations)
+controller:
+  enabled: true
+meshGateway:
+  enabled: true
+  #replicas: 1
+ingressGateways:
+  enabled: true
+  gateways:
+    - name: ingress-gateway-dc2
+      service:
+        type: LoadBalancer
+terminatingGateways:
+  enabled: true
+  gateways:
+    - name: terminating-gateway-dc2
+
+

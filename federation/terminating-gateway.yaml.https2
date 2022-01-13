@@ -1,0 +1,11 @@
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: TerminatingGateway
+metadata:
+  #name: terminating-gateway
+  name: terminating-gateway-dc1
+spec:
+  services:
+    #- name: example-https
+    - name: example-https2
+      caFile: ca.pem
+

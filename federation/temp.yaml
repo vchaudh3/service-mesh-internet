@@ -1,0 +1,36 @@
+ingressGateways:
+  enabled: true
+  defaults:
+    replicas: 1
+    service:
+      type: NodePort
+      ports:
+        - port: 8080
+          nodePort: 30013
+        - port: 8443
+          nodePort: 30014
+
+---
+meshGateway:
+  enabled: true
+  replicas: 1
+  service:
+    enabled: true
+    type: NodePort
+    nodePort: 30001
+  consulServiceName: "mesh-gateway"
+---
+
+ingressGateways:
+  defaults:
+    replicas: 1
+  enabled: true
+  gateways:
+    - name: secondary-ingress-gateway
+      service:
+        type: LoadBalancer
+        ports:
+          - port: 8080
+            nodePort: 30013
+          - port: 8443
+            nodePort: 30014

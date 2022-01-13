@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hashicat-metadata
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hashicat-metadata-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hashicat-metadata
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: hashicat-metadata
+        version: v2
+      annotations:
+        'consul.hashicorp.com/connect-inject': 'true'
+        #'consul.hashicorp.com/connect-service-protocol': 'http'
+        'consul.hashicorp.com/service-tags': 'v2'
+        'consul.hashicorp.com/service-meta-version': '2'
+    spec:
+      serviceAccountName: hashicat-metadata
+      containers:
+        - name: hashicat-metadata
+          image: nicholasjackson/fake-service:v0.10.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MESSAGE
+              value: "{\"enable_ratings\":\"True\",\"caption\":\"Welcome to Inaya's Meowlicious App\"}"
+            - name: SERVER_TYPE
+              value: "http"
+            - name: NAME
+              value: "hashicat-metadata"
+            - name: LISTEN_ADDR
+              value: "0.0.0.0:9090"
+          ports:
+          - containerPort: 9090
